@@ -9,7 +9,7 @@ public class BrowserShareActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);    //To change body of overridden methods use File | Settings | File Templates.
+        super.onCreate(savedInstanceState);
         final Intent intent = getIntent();
         setContentView(R.layout.browser_share);
         TextView textTwo = (TextView) findViewById(R.id.textTwo);

@@ -10,10 +10,8 @@ import android.widget.Toast;
 
 public class FirstActivity extends Activity
 {
-    /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.first_layout);
 

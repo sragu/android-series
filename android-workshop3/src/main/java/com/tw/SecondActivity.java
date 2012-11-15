@@ -23,8 +23,7 @@ public class SecondActivity extends Activity {
         launchContactButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent contactIntent = new Intent(Intent.ACTION_VIEW,
-                        ContactsContract.Contacts.CONTENT_URI);
+                Intent contactIntent = new Intent(Intent.ACTION_VIEW, ContactsContract.Contacts.CONTENT_URI);
                 startActivity(contactIntent);
             }
         });
