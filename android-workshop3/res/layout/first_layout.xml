@@ -12,10 +12,10 @@
             />
 
     <Button
-            android:id="@+id/launch_contacts"
+            android:id="@+id/launch_activity"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Launch Contacts"
+            android:text="Launch 2nd Activity"
             />
 </LinearLayout>
 
