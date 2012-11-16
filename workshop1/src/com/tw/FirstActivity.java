@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class HelloWorld extends Activity
+public class FirstActivity extends Activity
 {
     /** Called when the activity is first created. */
     @Override
@@ -22,8 +22,8 @@ public class HelloWorld extends Activity
         content.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(HelloWorld.this, "You clicked on the view", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(HelloWorld.this, SecondActivity.class);
+                Toast.makeText(FirstActivity.this, "You clicked on the view", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
                 intent.putExtra("content", "show this on the second screen");
                 startActivity(intent);
             }

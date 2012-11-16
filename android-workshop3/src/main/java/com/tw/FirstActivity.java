@@ -15,14 +15,15 @@ public class FirstActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.first_layout);
 
-        TextView content = (TextView) findViewById(R.id.content_view);
+        TextView content =
+                (TextView) findViewById(R.id.content_view);
         content.setText("Android Series Chennai - First Activity");
         Button launchButton = (Button) findViewById(R.id.launch_activity);
 
         launchButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(FirstActivity.this, "You clicked on the view", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(FirstActivity.this, "You clicked on the view", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
                 intent.putExtra("content", "Second Activity started - click to view contact");
                 startActivity(intent);
