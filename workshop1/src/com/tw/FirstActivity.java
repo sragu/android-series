@@ -17,7 +17,7 @@ public class FirstActivity extends Activity
         setContentView(R.layout.main);
 
         TextView content = (TextView) findViewById(R.id.content_view);
-        content.setText(" Android Series Chennai ");
+        content.setText("Android Series Chennai");
 
         content.setOnClickListener(new View.OnClickListener() {
             @Override
