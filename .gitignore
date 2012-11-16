@@ -6,3 +6,4 @@ gen
 bin
 target
 tmp
+.DS_Store
