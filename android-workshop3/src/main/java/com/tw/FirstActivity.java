@@ -23,7 +23,7 @@ public class FirstActivity extends Activity
         launchButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(FirstActivity.this, "You clicked on the view", Toast.LENGTH_SHORT).show();
+                Toast.makeText(FirstActivity.this, "You clicked on the view", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(FirstActivity.this, SecondActivity.class);
                 intent.putExtra("content", "Second Activity started - click to view contact");
                 startActivity(intent);

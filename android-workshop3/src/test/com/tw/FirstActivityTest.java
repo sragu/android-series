@@ -28,7 +28,7 @@ public class FirstActivityTest {
         activity.onCreate(null);
 
         TextView contentView = (TextView) activity.findViewById(R.id.content_view);
-        assertThat(conxtentView.getText().toString(), is("Android Series Chennai - First Activity"));
+        assertThat(contentView.getText().toString(), is("Android Series Chennai - First Activity"));
     }
 
     @Test
