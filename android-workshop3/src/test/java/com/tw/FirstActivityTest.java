@@ -1,7 +1,6 @@
 package com.tw;
 
 import android.content.Intent;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import com.xtremelabs.robolectric.Robolectric;
@@ -16,11 +15,11 @@ import static org.junit.Assert.assertThat;
 @RunWith(RobolectricTestRunner.class)
 public class FirstActivityTest {
 
-    private FirstActivity activity;
+    private FirstActivity_ activity;
 
     @Before
     public void setUp() {
-        activity = new FirstActivity();
+        activity = new FirstActivity_();
     }
 
     @Test
