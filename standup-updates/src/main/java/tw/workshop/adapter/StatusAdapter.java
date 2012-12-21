@@ -37,7 +37,7 @@ public class StatusAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            view = inflater.inflate(R.layout.status_row, viewGroup);
+            view = inflater.inflate(R.layout.status_row, null);
         }
 
         TextView storyNumberView = (TextView) view.findViewById(R.id.story_number);
