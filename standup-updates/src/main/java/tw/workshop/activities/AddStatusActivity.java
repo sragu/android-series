@@ -18,6 +18,9 @@ public class AddStatusActivity extends RoboActivity{
     @InjectView(R.id.story_number_text)
     private EditText storyNumber;
 
+    @InjectView(R.id.story_status_text)
+    private EditText storyStatus;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +29,7 @@ public class AddStatusActivity extends RoboActivity{
             @Override
             public void onClick(View view) {
                 final Intent data = new Intent();
-                data.putExtra("new_status_item", new Status(storyNumber.getText().toString(), null, null, false));
+                data.putExtra("new_status_item", new Status(storyNumber.getText().toString(), storyStatus.getText().toString(), null, false));
                 setResult(RESULT_OK, data);
                 finish();
             }

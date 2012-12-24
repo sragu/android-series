@@ -15,6 +15,18 @@
             android:layout_height="wrap_content"
             android:id="@+id/story_number_text"
             />
+
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status:"
+            android:id="@+id/story_status_label"
+            />
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/story_status_text"
+            />
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
