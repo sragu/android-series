@@ -13,10 +13,9 @@ import java.util.List;
 
 public class StatusAdapter extends BaseAdapter {
 
-    private List<Status> statusList = new ArrayList<Status>();
+    public static List<Status> statusList = new ArrayList<Status>();
 
     public StatusAdapter() {
-        this.statusList.add(new Status("story1", "blocked"));
     }
 
     @Override
@@ -40,11 +39,18 @@ public class StatusAdapter extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
             view = inflater.inflate(R.layout.status_row, null);
         }
+
         Status status = statusList.get(i);
         TextView storyNumberView = (TextView) view.findViewById(R.id.story_number);
         TextView storyStatusView = (TextView) view.findViewById(R.id.story_status);
         storyNumberView.setText(status.getStoryNumber());
         storyStatusView.setText(status.getStatus());
         return view;
+
+    }
+
+    public void add(Status status) {
+        statusList.add(status);
+        notifyDataSetChanged();
     }
 }

@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello standup-updates-application!</string>
     <string name="app_name">standup-updates-application</string>
+    <string name="add_status">Add</string>
 </resources>
