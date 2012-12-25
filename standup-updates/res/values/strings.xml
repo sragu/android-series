@@ -3,4 +3,7 @@
     <string name="hello">Hello standup-updates-application!</string>
     <string name="app_name">standup-updates-application</string>
     <string name="add_status">Add</string>
+    <string name="status">Status:</string>
+    <string name="story_number">Story Number:</string>
+    <string name="details">Details:</string>
 </resources>

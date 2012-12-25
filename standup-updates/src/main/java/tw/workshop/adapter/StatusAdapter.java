@@ -43,8 +43,10 @@ public class StatusAdapter extends BaseAdapter {
         Status status = statusList.get(i);
         TextView storyNumberView = (TextView) view.findViewById(R.id.story_number);
         TextView storyStatusView = (TextView) view.findViewById(R.id.story_status);
+        TextView detailsView = (TextView) view.findViewById(R.id.details);
         storyNumberView.setText(status.getStoryNumber());
         storyStatusView.setText(status.getStatus());
+        detailsView.setText(status.getDetails());
         return view;
 
     }

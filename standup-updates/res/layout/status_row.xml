@@ -19,4 +19,12 @@
             android:gravity="right"
             />
 
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/details"
+            android:layout_below="@id/story_number"
+            android:layout_alignParentLeft="true"
+            />
+
 </RelativeLayout>
