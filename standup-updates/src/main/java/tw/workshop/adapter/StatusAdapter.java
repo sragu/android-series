@@ -1,58 +1,36 @@
 package tw.workshop.adapter;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.CursorAdapter;
 import android.widget.TextView;
 import tw.workshop.R;
-import tw.workshop.model.Status;
 
-import java.util.ArrayList;
-import java.util.List;
+public class StatusAdapter extends CursorAdapter {
 
-public class StatusAdapter extends BaseAdapter {
 
-    public static List<Status> statusList = new ArrayList<Status>();
-
-    public StatusAdapter() {
+    public StatusAdapter(Context context, Cursor c) {
+        super(context, c);
     }
 
     @Override
-    public int getCount() {
-        return statusList.size();
+    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
+        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View view = inflater.inflate(R.layout.status_row, null);
+        return view;
     }
 
     @Override
-    public Object getItem(int i) {
-        return statusList.get(i);
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
-
-    @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        if (view == null) {
-            LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            view = inflater.inflate(R.layout.status_row, null);
-        }
-
-        Status status = statusList.get(i);
+    public void bindView(View view, Context context, Cursor cursor) {
         TextView storyNumberView = (TextView) view.findViewById(R.id.story_number);
         TextView storyStatusView = (TextView) view.findViewById(R.id.story_status);
         TextView detailsView = (TextView) view.findViewById(R.id.details);
-        storyNumberView.setText(status.getStoryNumber());
-        storyStatusView.setText(status.getStatus());
-        detailsView.setText(status.getDetails());
-        return view;
-
+        storyNumberView.setText(cursor.getString(1));
+        storyStatusView.setText(cursor.getString(2));
+        detailsView.setText(cursor.getString(3));
     }
 
-    public void add(Status status) {
-        statusList.add(status);
-        notifyDataSetChanged();
-    }
 }
