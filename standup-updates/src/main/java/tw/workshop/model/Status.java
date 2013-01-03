@@ -9,11 +9,10 @@ public class Status implements Serializable {
     private String details;
     private boolean blocked;
 
-    public Status(String storyNumber, String status, String details, boolean blocked) {
+    public Status(String storyNumber, String status, String details) {
         this.storyNumber = storyNumber;
         this.status = status;
         this.details = details;
-        this.blocked = blocked;
     }
 
     public String getStoryNumber() {
