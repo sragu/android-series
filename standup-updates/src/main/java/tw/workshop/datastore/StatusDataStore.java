@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import com.google.inject.Inject;
 import tw.workshop.model.Status;
 
 import static tw.workshop.datastore.StatusUpdatesHelper.*;
@@ -15,6 +16,7 @@ public class StatusDataStore {
     private static final String DATABASE_NAME = "status_updates.db";
     private SQLiteDatabase database;
 
+    @Inject
     public StatusDataStore(Context context) {
         statusUpdateHelper = new StatusUpdatesHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
         database = statusUpdateHelper.getWritableDatabase();
