@@ -2,8 +2,10 @@ package tw.workshop.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
@@ -29,6 +31,7 @@ public class StatusListActivity extends RoboActivity {
         statusDataStore = new StatusDataStore(this);
         statusAdapter = new StatusAdapter(this, statusDataStore.getStatusCursor());
         statusList.setAdapter(statusAdapter);
+        registerForContextMenu(statusList);
     }
 
     @Override
@@ -49,6 +52,19 @@ public class StatusListActivity extends RoboActivity {
         Status status = (Status) data.getExtras().get("new_status_item");
         statusDataStore.save(status);
         statusAdapter.changeCursor(statusDataStore.getStatusCursor());
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Status Config");
+        getMenuInflater().inflate(R.layout.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        return true;
+
     }
 }
 
