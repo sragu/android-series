@@ -9,6 +9,7 @@ import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import tw.workshop.R;
 import tw.workshop.adapter.StatusAdapter;
+import tw.workshop.datastore.StatusDataStore;
 import tw.workshop.model.Status;
 
 public class StatusListActivity extends RoboActivity {
@@ -19,12 +20,14 @@ public class StatusListActivity extends RoboActivity {
 
     @InjectView(R.id.status_list)
     private ListView statusList;
+    private StatusDataStore statusDataStore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.status_details);
-        statusAdapter = new StatusAdapter();
+        statusDataStore = new StatusDataStore(this);
+        statusAdapter = new StatusAdapter(this, statusDataStore.getStatusCursor());
         statusList.setAdapter(statusAdapter);
     }
 
@@ -44,7 +47,8 @@ public class StatusListActivity extends RoboActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Status status = (Status) data.getExtras().get("new_status_item");
-        statusAdapter.add(status);
+        statusDataStore.save(status);
+        statusAdapter.changeCursor(statusDataStore.getStatusCursor());
     }
 }
 
