@@ -32,7 +32,7 @@ public class AddStatusActivity extends RoboActivity{
             @Override
             public void onClick(View view) {
                 final Intent data = new Intent();
-                data.putExtra("new_status_item", new Status(storyNumber.getText().toString(), storyStatus.getText().toString(), details.getText().toString(), false));
+                data.putExtra("new_status_item", new Status(storyNumber.getText().toString(), storyStatus.getText().toString(), details.getText().toString()));
                 setResult(RESULT_OK, data);
                 finish();
             }

@@ -4,35 +4,34 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import com.google.inject.Inject;
 import tw.workshop.model.Status;
-
-import static tw.workshop.datastore.StatusUpdatesHelper.*;
 
 public class StatusDataStore {
 
-    private StatusUpdatesHelper statusUpdateHelper;
-    private static final int DATABASE_VERSION = 2;
-    private static final String DATABASE_NAME = "status_updates.db";
-    private SQLiteDatabase database;
+    private StatusUpdatesHelper statusUpdatehelper;
+    private static final String DATABASE_NAME = "status_update.db";
+    private static final int DATABASE_VERSION = 1;
+    private final SQLiteDatabase database;
 
-    @Inject
     public StatusDataStore(Context context) {
-        statusUpdateHelper = new StatusUpdatesHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
-        database = statusUpdateHelper.getWritableDatabase();
+        statusUpdatehelper = new StatusUpdatesHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+        database = statusUpdatehelper.getWritableDatabase();
     }
 
-    public void saveStatus(Status status) {
+    public void save(Status status) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_STORY_NO, status.getStoryNumber());
-        contentValues.put(COLUMN_STATUS, status.getStatus());
-        contentValues.put(COLUMN_DETAILS, status.getDetails());
-        database.insert(TABLE_NAME, null, contentValues);
+        contentValues.put(StatusUpdatesHelper.COLUMN_STORY_NO, status.getStoryNumber());
+        contentValues.put(StatusUpdatesHelper.COLUMN_DETAILS, status.getDetails());
+        contentValues.put(StatusUpdatesHelper.COLUMN_STATUS, status.getStatus());
+        database.insert(StatusUpdatesHelper.TABLE_NAME, null, contentValues);
     }
 
-    public Cursor getAllStatus() {
-        return database.rawQuery(
-                "SELECT * FROM " + TABLE_NAME,
-                null);
+    public void delete(Cursor cursor) {
+        Integer columnIndex = cursor.getColumnIndex(StatusUpdatesHelper.COLUMN_ID);
+        database.delete(StatusUpdatesHelper.TABLE_NAME, StatusUpdatesHelper.COLUMN_ID+ "=?", new String[]{cursor.getString(columnIndex)});
+    }
+
+    public Cursor getStatusCursor() {
+        return database.rawQuery("select * from " + StatusUpdatesHelper.TABLE_NAME, null);
     }
 }

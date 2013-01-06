@@ -11,14 +11,13 @@ import tw.workshop.R;
 
 public class StatusAdapter extends CursorAdapter {
 
-
     public StatusAdapter(Context context, Cursor c) {
         super(context, c);
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.status_row, null);
         return view;
     }
@@ -29,8 +28,9 @@ public class StatusAdapter extends CursorAdapter {
         TextView storyStatusView = (TextView) view.findViewById(R.id.story_status);
         TextView detailsView = (TextView) view.findViewById(R.id.details);
         storyNumberView.setText(cursor.getString(1));
-        storyStatusView.setText(cursor.getString(2));
-        detailsView.setText(cursor.getString(3));
+        detailsView.setText(cursor.getString(2));
+        storyStatusView.setText(cursor.getString(3));
     }
+
 
 }

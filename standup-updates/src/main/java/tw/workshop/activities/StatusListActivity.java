@@ -1,11 +1,15 @@
 package tw.workshop.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.google.inject.Inject;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import tw.workshop.R;
@@ -13,26 +17,23 @@ import tw.workshop.adapter.StatusAdapter;
 import tw.workshop.datastore.StatusDataStore;
 import tw.workshop.model.Status;
 
-public class StatusListActivity extends RoboActivity implements StatusCallback {
+public class StatusListActivity extends RoboActivity {
 
     private static String TAG = "standup-updates-application";
 
     StatusAdapter statusAdapter;
-    @Inject
-    StatusDataStore statusDataStore;
 
     @InjectView(R.id.status_list)
     private ListView statusList;
-
-    private SaveStatusTask saveStatusTask;
+    private StatusDataStore statusDataStore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.status_details);
-        statusAdapter = new StatusAdapter(this, statusDataStore.getAllStatus());
+        statusDataStore = new StatusDataStore(this);
+        statusAdapter = new StatusAdapter(this, statusDataStore.getStatusCursor());
         statusList.setAdapter(statusAdapter);
-        statusList.setLongClickable(true);
         registerForContextMenu(statusList);
     }
 
@@ -40,14 +41,6 @@ public class StatusListActivity extends RoboActivity implements StatusCallback {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.layout.menu, menu);
         return true;
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        menu.setHeaderTitle("some");
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.layout.context_menu, menu);
     }
 
     @Override
@@ -60,21 +53,27 @@ public class StatusListActivity extends RoboActivity implements StatusCallback {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Status status = (Status) data.getExtras().get("new_status_item");
-        saveStatusTask = new SaveStatusTask(this,this,statusDataStore,status);
-        saveStatusTask.execute();
-        //statusDataStore.saveStatus(status);
-
+        statusDataStore.save(status);
+        statusAdapter.changeCursor(statusDataStore.getStatusCursor());
     }
 
     @Override
-    public void onFailure(String reason) {
-        Toast.makeText(this, reason, 30);
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Status Config");
+        getMenuInflater().inflate(R.layout.context_menu, menu);
     }
 
     @Override
-    public void onSuccess(String message) {
-        statusAdapter.changeCursor(statusDataStore.getAllStatus());
-        Toast.makeText(this, message, 1000*10).show();
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Integer position = menuInfo.position;
+        Cursor statusCursor = (Cursor) statusAdapter.getItem(position);
+        statusDataStore.delete(statusCursor);
+        statusAdapter.changeCursor(statusDataStore.getStatusCursor());
+        Toast.makeText(this, getString(R.string.deleted_successfully), 10 * 1000).show();
+        return true;
+
     }
 }
 
