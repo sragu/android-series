@@ -1,12 +1,15 @@
 package tw.workshop.activities;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import roboguice.activity.RoboActivity;
 import roboguice.inject.InjectView;
 import tw.workshop.R;
@@ -63,6 +66,12 @@ public class StatusListActivity extends RoboActivity {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        Integer position = menuInfo.position;
+        Cursor statusCursor = (Cursor) statusAdapter.getItem(position);
+        statusDataStore.delete(statusCursor);
+        statusAdapter.changeCursor(statusDataStore.getStatusCursor());
+        Toast.makeText(this, getString(R.string.deleted_successfully), 10 * 1000).show();
         return true;
 
     }

@@ -26,7 +26,12 @@ public class StatusDataStore {
         database.insert(StatusUpdatesHelper.TABLE_NAME, null, contentValues);
     }
 
+    public void delete(Cursor cursor) {
+        Integer columnIndex = cursor.getColumnIndex(StatusUpdatesHelper.COLUMN_ID);
+        database.delete(StatusUpdatesHelper.TABLE_NAME, StatusUpdatesHelper.COLUMN_ID+ "=?", new String[]{cursor.getString(columnIndex)});
+    }
+
     public Cursor getStatusCursor() {
-        return database.rawQuery("select * from "+ StatusUpdatesHelper.TABLE_NAME, null);
+        return database.rawQuery("select * from " + StatusUpdatesHelper.TABLE_NAME, null);
     }
 }
