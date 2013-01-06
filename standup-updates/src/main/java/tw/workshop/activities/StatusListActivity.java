@@ -55,6 +55,7 @@ public class StatusListActivity extends RoboActivity {
         Status status = (Status) data.getExtras().get("new_status_item");
         statusDataStore.save(status);
         statusAdapter.changeCursor(statusDataStore.getStatusCursor());
+        Toast.makeText(this, getString(R.string.saved_successfully), 10 * 1000).show();
     }
 
     @Override
