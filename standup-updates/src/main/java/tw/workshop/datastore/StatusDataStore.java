@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import tw.workshop.model.Status;
 
-import static tw.workshop.StatusContentProvider.STATUS_TABLE;
+import static tw.workshop.datastore.StatusContentProvider.STATUS_TABLE;
 
 public class StatusDataStore {
 
@@ -29,12 +29,11 @@ public class StatusDataStore {
         contentValues.put(StatusUpdatesHelper.COLUMN_DETAILS, status.getDetails());
         contentValues.put(StatusUpdatesHelper.COLUMN_STATUS, status.getStatus());
         context.getContentResolver().insert(statusTableUri(), contentValues);
-//        database.insert(StatusContentProvider.STATUS_TABLE, null, contentValues);
     }
 
     public void delete(Cursor cursor) {
         Integer columnIndex = cursor.getColumnIndex(StatusUpdatesHelper.COLUMN_ID);
-        database.delete(STATUS_TABLE, StatusUpdatesHelper.COLUMN_ID+ "=?", new String[]{cursor.getString(columnIndex)});
+        context.getContentResolver().delete(statusTableUri(), StatusUpdatesHelper.COLUMN_ID+"=?", new String[]{cursor.getString(columnIndex)});
     }
 
     public Cursor getStatusCursor() {

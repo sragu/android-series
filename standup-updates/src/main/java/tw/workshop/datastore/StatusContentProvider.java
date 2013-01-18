@@ -1,4 +1,4 @@
-package tw.workshop;
+package tw.workshop.datastore;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import roboguice.content.RoboContentProvider;
-import tw.workshop.datastore.StatusUpdatesHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +50,7 @@ public class StatusContentProvider extends RoboContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        throw new RuntimeException("Not yet supported");
+        return database().delete(getTableName(uri) , selection, selectionArgs);
     }
 
     @Override

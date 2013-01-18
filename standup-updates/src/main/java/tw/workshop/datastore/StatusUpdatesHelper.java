@@ -3,7 +3,6 @@ package tw.workshop.datastore;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import tw.workshop.StatusContentProvider;
 
 public class StatusUpdatesHelper extends SQLiteOpenHelper {
 

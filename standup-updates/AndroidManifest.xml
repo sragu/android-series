@@ -12,7 +12,7 @@
         <activity android:name=".activities.AddStatusActivity">
         </activity>
         <provider
-                android:name="tw.workshop.StatusContentProvider"
+                android:name=".datastore.StatusContentProvider"
                 android:authorities="tw.workshop"
                 android:exported="true">
 
