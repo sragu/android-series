@@ -1,6 +1,5 @@
 package tw.workshop;
 
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -47,7 +46,7 @@ public class StatusContentProvider extends RoboContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         database().insert(getTableName(uri), null, values);
-        return ContentUris.withAppendedId(uri, (Long) values.get("_id"));
+        return uri;
     }
 
     @Override
