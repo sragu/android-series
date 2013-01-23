@@ -55,7 +55,7 @@ public class StatusContentProvider extends RoboContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        throw new RuntimeException("Not yet supported");
+       return  database().update(getTableName(uri),values, selection, selectionArgs);
     }
 
     @Override

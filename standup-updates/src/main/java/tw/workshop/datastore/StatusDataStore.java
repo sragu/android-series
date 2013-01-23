@@ -43,4 +43,12 @@ public class StatusDataStore {
     private Uri statusTableUri() {
         return Uri.parse("content://tw.workshop/status");
     }
+
+    public void update(Status status) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(StatusUpdatesHelper.COLUMN_STORY_NO, status.getStoryNumber());
+        contentValues.put(StatusUpdatesHelper.COLUMN_DETAILS, status.getDetails());
+        contentValues.put(StatusUpdatesHelper.COLUMN_STATUS, status.getStatus());
+        context.getContentResolver().update(statusTableUri(), contentValues, StatusUpdatesHelper.COLUMN_STORY_NO+"=?", new String[]{status.getStoryNumber()});
+    }
 }

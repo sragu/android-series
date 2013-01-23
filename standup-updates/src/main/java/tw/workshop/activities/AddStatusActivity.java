@@ -10,7 +10,11 @@ import roboguice.inject.InjectView;
 import tw.workshop.R;
 import tw.workshop.model.Status;
 
-public class AddStatusActivity extends RoboActivity{
+import static tw.workshop.datastore.StatusUpdatesHelper.COLUMN_DETAILS;
+import static tw.workshop.datastore.StatusUpdatesHelper.COLUMN_STATUS;
+import static tw.workshop.datastore.StatusUpdatesHelper.COLUMN_STORY_NO;
+
+public class AddStatusActivity extends RoboActivity {
 
     @InjectView(R.id.save)
     private Button saveButton;
@@ -28,6 +32,7 @@ public class AddStatusActivity extends RoboActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_status);
+        populateDataFromIntentToViews(getIntent());
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,4 +44,13 @@ public class AddStatusActivity extends RoboActivity{
         });
     }
 
+    private void populateDataFromIntentToViews(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if (extras != null && !extras.isEmpty()) {
+            details.setText(extras.getString(COLUMN_DETAILS));
+            storyNumber.setText(extras.getString(COLUMN_STORY_NO));
+            storyStatus.setText(extras.getString(COLUMN_STATUS));
+            storyNumber.setEnabled(false);
+        }
+    }
 }

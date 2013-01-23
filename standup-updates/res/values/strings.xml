@@ -7,6 +7,8 @@
     <string name="story_number">Story Number:</string>
     <string name="details">Details:</string>
     <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
     <string name="deleted_successfully">Deleted Successfully</string>
     <string name="saved_successfully">Saved Successfully</string>
+    <string name="modified_successfully">Modified Successfully</string>
 </resources>

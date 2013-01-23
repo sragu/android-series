@@ -17,9 +17,13 @@ import tw.workshop.adapter.StatusAdapter;
 import tw.workshop.datastore.StatusDataStore;
 import tw.workshop.model.Status;
 
+import static tw.workshop.datastore.StatusUpdatesHelper.*;
+
 public class StatusListActivity extends RoboActivity {
 
     private static String TAG = "standup-updates-application";
+    private static final Integer SAVE_REQUEST_CODE = 3;
+    private static final Integer EDIT_REQUEST_CODE = 4;
 
     StatusAdapter statusAdapter;
 
@@ -53,9 +57,16 @@ public class StatusListActivity extends RoboActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Status status = (Status) data.getExtras().get("new_status_item");
-        statusDataStore.save(status);
-        statusAdapter.changeCursor(statusDataStore.getStatusCursor());
-        Toast.makeText(this, getString(R.string.saved_successfully), 10 * 1000).show();
+        if (SAVE_REQUEST_CODE == requestCode) {
+            statusDataStore.save(status);
+            statusAdapter.changeCursor(statusDataStore.getStatusCursor());
+            Toast.makeText(this, getString(R.string.saved_successfully), 10 * 1000).show();
+        } else if (EDIT_REQUEST_CODE == requestCode) {
+            statusDataStore.update(status);
+            statusAdapter.changeCursor(statusDataStore.getStatusCursor());
+            Toast.makeText(this, getString(R.string.modified_successfully), 10 * 1000).show();
+
+        }
     }
 
     @Override
@@ -70,11 +81,30 @@ public class StatusListActivity extends RoboActivity {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         Integer position = menuInfo.position;
         Cursor statusCursor = (Cursor) statusAdapter.getItem(position);
+        if (item.getTitle().equals(getString(R.string.delete))) {
+            deleteStatus(statusCursor);
+        } else if (item.getTitle().equals(getString(R.string.edit))) {
+            editStatus(statusCursor);
+        }
+        return true;
+
+    }
+
+    private void editStatus(Cursor statusCursor) {
+        Intent intent = new Intent(this, AddStatusActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString(COLUMN_STORY_NO, statusCursor.getString(statusCursor.getColumnIndex(COLUMN_STORY_NO)));
+        extras.putString(COLUMN_DETAILS, statusCursor.getString(statusCursor.getColumnIndex(COLUMN_DETAILS)));
+        extras.putString(COLUMN_STATUS, statusCursor.getString(statusCursor.getColumnIndex(COLUMN_STATUS)));
+        extras.putString(COLUMN_ID, statusCursor.getString(statusCursor.getColumnIndex(COLUMN_STATUS)));
+        intent.putExtras(extras);
+        startActivityForResult(intent, 4);
+    }
+
+    private void deleteStatus(Cursor statusCursor) {
         statusDataStore.delete(statusCursor);
         statusAdapter.changeCursor(statusDataStore.getStatusCursor());
         Toast.makeText(this, getString(R.string.deleted_successfully), 10 * 1000).show();
-        return true;
-
     }
 }
 
