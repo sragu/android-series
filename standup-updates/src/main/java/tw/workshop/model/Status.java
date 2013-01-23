@@ -1,5 +1,8 @@
 package tw.workshop.model;
 
+import android.content.ContentValues;
+import tw.workshop.datastore.StatusUpdatesHelper;
+
 import java.io.Serializable;
 
 public class Status implements Serializable {
@@ -24,5 +27,13 @@ public class Status implements Serializable {
 
     public String getDetails() {
         return details;
+    }
+
+    public ContentValues getContentValues(){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(StatusUpdatesHelper.COLUMN_STORY_NO, this.getStoryNumber());
+        contentValues.put(StatusUpdatesHelper.COLUMN_DETAILS, this.getDetails());
+        contentValues.put(StatusUpdatesHelper.COLUMN_STATUS, this.getStatus());
+        return contentValues;
     }
 }

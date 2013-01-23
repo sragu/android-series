@@ -1,6 +1,5 @@
 package tw.workshop.datastore;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,11 +23,7 @@ public class StatusDataStore {
     }
 
     public void save(Status status) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(StatusUpdatesHelper.COLUMN_STORY_NO, status.getStoryNumber());
-        contentValues.put(StatusUpdatesHelper.COLUMN_DETAILS, status.getDetails());
-        contentValues.put(StatusUpdatesHelper.COLUMN_STATUS, status.getStatus());
-        context.getContentResolver().insert(statusTableUri(), contentValues);
+        context.getContentResolver().insert(statusTableUri(), status.getContentValues());
     }
 
     public void delete(Cursor cursor) {
@@ -45,10 +40,6 @@ public class StatusDataStore {
     }
 
     public void update(Status status) {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(StatusUpdatesHelper.COLUMN_STORY_NO, status.getStoryNumber());
-        contentValues.put(StatusUpdatesHelper.COLUMN_DETAILS, status.getDetails());
-        contentValues.put(StatusUpdatesHelper.COLUMN_STATUS, status.getStatus());
-        context.getContentResolver().update(statusTableUri(), contentValues, StatusUpdatesHelper.COLUMN_STORY_NO+"=?", new String[]{status.getStoryNumber()});
+        context.getContentResolver().update(statusTableUri(), status.getContentValues(), StatusUpdatesHelper.COLUMN_STORY_NO+"=?", new String[]{status.getStoryNumber()});
     }
 }
