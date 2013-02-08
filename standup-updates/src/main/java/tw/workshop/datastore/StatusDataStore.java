@@ -6,10 +6,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import tw.workshop.model.Status;
 
-import static tw.workshop.datastore.StatusContentProvider.STATUS_TABLE;
-
 public class StatusDataStore {
 
+    public static final Uri STATUS_TABLE_URI = Uri.parse("content://tw.workshop/status");
     private StatusUpdatesHelper statusUpdateHelper;
     private static final String DATABASE_NAME = "status_update.db";
     private static final int DATABASE_VERSION = 1;
@@ -23,23 +22,15 @@ public class StatusDataStore {
     }
 
     public void save(Status status) {
-        context.getContentResolver().insert(statusTableUri(), status.getContentValues());
+        context.getContentResolver().insert(STATUS_TABLE_URI, status.getContentValues());
     }
 
     public void delete(Cursor cursor) {
         Integer columnIndex = cursor.getColumnIndex(StatusUpdatesHelper.COLUMN_ID);
-        context.getContentResolver().delete(statusTableUri(), StatusUpdatesHelper.COLUMN_ID+"=?", new String[]{cursor.getString(columnIndex)});
-    }
-
-    public Cursor getStatusCursor() {
-        return database.rawQuery("select * from " + STATUS_TABLE, null);
-    }
-
-    private Uri statusTableUri() {
-        return Uri.parse("content://tw.workshop/status");
+        context.getContentResolver().delete(STATUS_TABLE_URI, StatusUpdatesHelper.COLUMN_ID+"=?", new String[]{cursor.getString(columnIndex)});
     }
 
     public void update(Status status) {
-        context.getContentResolver().update(statusTableUri(), status.getContentValues(), StatusUpdatesHelper.COLUMN_STORY_NO+"=?", new String[]{status.getStoryNumber()});
+        context.getContentResolver().update(STATUS_TABLE_URI, status.getContentValues(), StatusUpdatesHelper.COLUMN_STORY_NO+"=?", new String[]{status.getStoryNumber()});
     }
 }

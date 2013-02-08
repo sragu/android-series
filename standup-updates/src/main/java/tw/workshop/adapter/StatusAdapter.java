@@ -2,24 +2,15 @@ package tw.workshop.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CursorAdapter;
+import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 import tw.workshop.R;
 
-public class StatusAdapter extends CursorAdapter {
+public class StatusAdapter extends ResourceCursorAdapter {
 
-    public StatusAdapter(Context context, Cursor c) {
-        super(context, c);
-    }
-
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.status_row, null);
-        return view;
+    public StatusAdapter(Context context) {
+        super(context, R.layout.status_row, null);
     }
 
     @Override

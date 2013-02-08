@@ -1,5 +1,6 @@
 package tw.workshop.datastore;
 
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
@@ -21,11 +22,16 @@ public class StatusContentProvider extends RoboContentProvider {
 
     private Map<Integer, String> tables = new HashMap<Integer, String>();
     private Context context;
+    private SQLiteDatabase database;
 
     @Override
     public boolean onCreate() {
         super.onCreate();
         context = getContext();
+
+        StatusUpdatesHelper statusUpdatesHelper = new StatusUpdatesHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+        database = statusUpdatesHelper.getWritableDatabase();
+
         return true;
     }
 
@@ -39,23 +45,30 @@ public class StatusContentProvider extends RoboContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        throw new RuntimeException("Not yet supported");
+        final ContentResolver resolver = getContext().getContentResolver();
+        Cursor cursor = database.query(getTableName(uri), projection, selection, selectionArgs, null, null, sortOrder);
+        cursor.setNotificationUri(resolver, uri);
+        return cursor;
     }
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        database().insert(getTableName(uri), null, values);
-        return uri;
+        long insertedId = database.insert(getTableName(uri), null, values);
+        Uri uriToNotify = Uri.withAppendedPath(uri, String.valueOf(insertedId));
+        getContext().getContentResolver().notifyChange(uriToNotify, null);
+        return uriToNotify;
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return database().delete(getTableName(uri) , selection, selectionArgs);
+        int deletedRecords = database.delete(getTableName(uri), selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return deletedRecords;
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-       return  database().update(getTableName(uri),values, selection, selectionArgs);
+       return  database.update(getTableName(uri),values, selection, selectionArgs);
     }
 
     @Override
@@ -65,10 +78,5 @@ public class StatusContentProvider extends RoboContentProvider {
 
     public String getTableName(Uri uri) {
         return tables.get(uriMatcher.match(uri));
-    }
-
-    public SQLiteDatabase database() {
-        StatusUpdatesHelper statusUpdatesHelper = new StatusUpdatesHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
-        return statusUpdatesHelper.getWritableDatabase();
     }
 }

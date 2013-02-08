@@ -1,8 +1,13 @@
 package tw.workshop.activities;
 
+import android.app.LoaderManager;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,11 +24,11 @@ import tw.workshop.model.Status;
 
 import static tw.workshop.datastore.StatusUpdatesHelper.*;
 
-public class StatusListActivity extends RoboActivity {
-
+public class StatusListActivity extends RoboActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private static String TAG = "standup-updates-application";
     private static final Integer SAVE_REQUEST_CODE = 3;
     private static final Integer EDIT_REQUEST_CODE = 4;
+    private static final int LOADER_ID = 1;
 
     StatusAdapter statusAdapter;
 
@@ -36,9 +41,17 @@ public class StatusListActivity extends RoboActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.status_details);
         statusDataStore = new StatusDataStore(this);
-        statusAdapter = new StatusAdapter(this, statusDataStore.getStatusCursor());
+        statusAdapter = new StatusAdapter(this);
         statusList.setAdapter(statusAdapter);
         registerForContextMenu(statusList);
+        getLoaderManager().initLoader(LOADER_ID, null, this);
+
+        getContentResolver().registerContentObserver(StatusDataStore.STATUS_TABLE_URI, true, new ContentObserver(new Handler()) {
+            @Override
+            public void onChange(boolean selfChange) {
+                Toast.makeText(StatusListActivity.this, "Observer notified", 2000).show();
+            }
+        });
     }
 
     @Override
@@ -59,13 +72,10 @@ public class StatusListActivity extends RoboActivity {
         Status status = (Status) data.getExtras().get("new_status_item");
         if (SAVE_REQUEST_CODE == requestCode) {
             statusDataStore.save(status);
-            statusAdapter.changeCursor(statusDataStore.getStatusCursor());
             Toast.makeText(this, getString(R.string.saved_successfully), 10 * 1000).show();
         } else if (EDIT_REQUEST_CODE == requestCode) {
             statusDataStore.update(status);
-            statusAdapter.changeCursor(statusDataStore.getStatusCursor());
             Toast.makeText(this, getString(R.string.modified_successfully), 10 * 1000).show();
-
         }
     }
 
@@ -103,8 +113,25 @@ public class StatusListActivity extends RoboActivity {
 
     private void deleteStatus(Cursor statusCursor) {
         statusDataStore.delete(statusCursor);
-        statusAdapter.changeCursor(statusDataStore.getStatusCursor());
         Toast.makeText(this, getString(R.string.deleted_successfully), 10 * 1000).show();
     }
-}
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return getStatusCursorLoader();
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        statusAdapter.swapCursor(cursor);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        statusAdapter.swapCursor(null);
+    }
+
+    private CursorLoader getStatusCursorLoader() {
+        return new CursorLoader(this, StatusDataStore.STATUS_TABLE_URI, new String[]{"_id", "story_number", "story_details", "story_status"}, "", new String[]{}, "");
+    }
+}
